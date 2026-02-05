@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat with GLM-4.5 AI | Powered by OpenRouter</title>
+    <title>Chat with Gemini 3 Flash | Powered by Google AI</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.3/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -169,8 +169,8 @@
     <div class="max-w-4xl mx-auto mb-16">
         <!-- Header -->
         <div class="text-center mb-8">
-            <h1 class="text-4xl font-bold text-white mb-2">GLM-4.5 AI Chat Assistant</h1>
-            <p class="text-white/80">Powered by OpenRouter API | Auto-Connected</p>
+            <h1 class="text-4xl font-bold text-white mb-2">Gemini 3 Flash AI Chat Assistant</h1>
+            <p class="text-white/80">Powered by Google AI | Auto-Connected</p>
         </div>
 
         <!-- Main Chat Container -->
@@ -182,7 +182,7 @@
                         <i class="fas fa-robot"></i>
                     </div>
                     <div>
-                        <h2 class="font-bold">GLM-4.5 Air (Free)</h2>
+                        <h2 class="font-bold">Gemini 3 Flash Preview</h2>
                         <p class="text-sm opacity-90">
                             Status: 
                             <span id="connection-status-text" class="ml-1">
@@ -203,7 +203,7 @@
                     <div class="loading-spinner mr-3"></div>
                     <div>
                         <p class="font-medium text-green-800">Establishing API Connection...</p>
-                        <p class="text-sm text-green-600 mt-1">Please wait while we connect to OpenRouter servers</p>
+                        <p class="text-sm text-green-600 mt-1">Please wait while we connect to Google AI servers</p>
                     </div>
                 </div>
             </div>
@@ -276,8 +276,8 @@
 
         <!-- Footer -->
         <div class="mt-6 text-center text-white/70 text-sm">
-            <p>Powered by <a href="https://openrouter.ai" target="_blank" class="underline hover:text-white">OpenRouter</a> | 
-            Model: <span class="font-mono">z-ai/glm-4.5-air:free</span> | 
+            <p>Powered by <a href="https://ai.google.dev/" target="_blank" class="underline hover:text-white">Google AI</a> | 
+            Model: <span class="font-mono">gemini-3-flash-preview</span> | 
             API Status: <span id="api-status" class="connection-status">
                 <span class="loading-spinner mr-1"></span> Auto-connecting...
             </span></p>
@@ -285,9 +285,9 @@
     </div>
 
     <script>
-        // Configuration
-        const OPENROUTER_API_KEY = "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";
-        const MODEL_ID = "z-ai/glm-4.5-air:free";
+        // Configuration - GOOGLE GEMINI 3 FLASH
+        const GOOGLE_API_KEY = "AIzaSyDUhF3rn_Fn_ZlhtkjCfe-nPKWt0FSl4Gs"; // Your Google AI API Key
+        const MODEL_ID = "gemini-3-flash-preview";
         const CREATOR_NAME = "Muhammad Fareed Mustafai";
         
         // DOM Elements
@@ -313,11 +313,11 @@
         
         // Initialize - Auto Connect on Load
         document.addEventListener('DOMContentLoaded', async function() {
-            console.log('GLM-4.5 Chat initializing...');
+            console.log('Gemini 3 Flash Chat initializing...');
             console.log('CREATED BY ' + CREATOR_NAME);
             
             // Show loading state
-            updateConnectionStatus('connecting', 'Auto-connecting to OpenRouter...');
+            updateConnectionStatus('connecting', 'Auto-connecting to Google AI...');
             
             // Auto-resize textarea
             userInput.addEventListener('input', function() {
@@ -332,29 +332,36 @@
         // Auto-connect function
         async function autoConnect() {
             try {
-                console.log('Starting automatic API connection...');
+                console.log('Starting automatic API connection to Google AI...');
                 
-                // Step 1: Test API key authentication
-                updateConnectionStatus('connecting', 'Authenticating API key...');
+                // Step 1: Test API connection with a simple request
+                updateConnectionStatus('connecting', 'Authenticating with Google AI...');
                 
-                const authResponse = await fetch('https://openrouter.ai/api/v1/auth/key', {
+                // Test connection with a simple request
+                const testResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${MODEL_ID}:generateContent?key=${GOOGLE_API_KEY}`, {
+                    method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${OPENROUTER_API_KEY}`
-                    }
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: "Hello"
+                            }]
+                        }],
+                        generationConfig: {
+                            maxOutputTokens: 10
+                        }
+                    })
                 });
                 
-                if (!authResponse.ok) {
-                    throw new Error(`Authentication failed: HTTP ${authResponse.status}`);
+                if (!testResponse.ok) {
+                    const errorData = await testResponse.json();
+                    throw new Error(errorData.error?.message || `HTTP ${testResponse.status}`);
                 }
                 
-                // Step 2: Test model availability
-                updateConnectionStatus('connecting', 'Checking model availability...');
-                
-                // Small delay for better UX
-                await new Promise(resolve => setTimeout(resolve, 500));
-                
-                // Step 3: Success - enable chat
-                updateConnectionStatus('connected', 'Connected to GLM-4.5');
+                // Step 2: Success - enable chat
+                updateConnectionStatus('connected', 'Connected to Gemini 3 Flash');
                 
                 // Hide auto-connect message
                 autoConnectMessage.innerHTML = `
@@ -363,8 +370,8 @@
                             <i class="fas fa-check text-white text-xs"></i>
                         </div>
                         <div>
-                            <p class="font-medium text-green-800">✅ Connection Established Successfully!</p>
-                            <p class="text-sm text-green-600 mt-1">You can now start chatting with the AI</p>
+                            <p class="font-medium text-green-800">✅ Google AI Connection Established!</p>
+                            <p class="text-sm text-green-600 mt-1">Gemini 3 Flash is ready to chat</p>
                         </div>
                     </div>
                 `;
@@ -380,7 +387,7 @@
                     // Enable all controls
                     enableAllControls();
                     
-                    console.log('✅ API connection successful! Chat ready.');
+                    console.log('✅ Google AI connection successful! Chat ready.');
                 }, 1000);
                 
             } catch (error) {
@@ -394,8 +401,8 @@
                             <i class="fas fa-times text-white text-xs"></i>
                         </div>
                         <div>
-                            <p class="font-medium text-red-800">❌ Connection Failed</p>
-                            <p class="text-sm text-red-600 mt-1">${error.message || 'Unable to connect to OpenRouter API'}</p>
+                            <p class="font-medium text-red-800">❌ Google AI Connection Failed</p>
+                            <p class="text-sm text-red-600 mt-1">${error.message || 'Unable to connect to Google AI API'}</p>
                             <button onclick="retryConnection()" class="mt-2 text-sm bg-red-100 text-red-700 px-3 py-1 rounded hover:bg-red-200 transition">
                                 <i class="fas fa-redo mr-1"></i> Retry Connection
                             </button>
@@ -453,7 +460,7 @@
                 <div class="flex items-center">
                     <div class="loading-spinner mr-3"></div>
                     <div>
-                        <p class="font-medium text-green-800">Retrying API Connection...</p>
+                        <p class="font-medium text-green-800">Retrying Google AI Connection...</p>
                         <p class="text-sm text-green-600 mt-1">Please wait while we reconnect</p>
                     </div>
                 </div>
@@ -491,17 +498,17 @@
             welcomeDiv.innerHTML = `
                 <div class="flex items-center mb-2">
                     <div class="model-badge pulse">
-                        <i class="fas fa-bolt mr-1"></i> GLM-4.5
+                        <i class="fab fa-google mr-1"></i> Gemini 3 Flash
                     </div>
-                    <span class="text-xs text-gray-500 ml-2">via OpenRouter</span>
+                    <span class="text-xs text-gray-500 ml-2">via Google AI</span>
                 </div>
                 <div class="message-content">
-                    <h3 class="font-bold text-lg mb-2">✅ Connection Successful! Hello! 👋</h3>
-                    <p class="mb-3">I'm powered by <strong>GLM-4.5 Air</strong> through OpenRouter API. Your connection has been automatically established!</p>
+                    <h3 class="font-bold text-lg mb-2">✅ Google AI Connection Successful! Hello! 👋</h3>
+                    <p class="mb-3">I'm powered by <strong>Gemini 3 Flash Preview</strong> from Google AI. Your connection has been automatically established!</p>
                     
                     <div class="bg-green-50 p-3 rounded-lg mb-3 border border-green-100">
-                        <p class="text-sm font-medium text-green-800 mb-1"><i class="fas fa-check-circle mr-2"></i>API Status: Connected</p>
-                        <p class="text-xs text-green-600">Model: z-ai/glm-4.5-air:free | Auto-connected</p>
+                        <p class="text-sm font-medium text-green-800 mb-1"><i class="fas fa-check-circle mr-2"></i>Google AI Status: Connected</p>
+                        <p class="text-xs text-green-600">Model: gemini-3-flash-preview | Auto-connected</p>
                     </div>
                     
                     <p class="mb-2"><strong>Pro Tip:</strong> Try asking "Who created you?" to learn about my developer!</p>
@@ -531,14 +538,14 @@
                     </div>
                 </div>
                 <div class="message-content">
-                    <h3 class="font-bold text-lg mb-2 text-red-600">❌ Connection Failed</h3>
-                    <p class="mb-3">Unable to connect to OpenRouter API. Please check:</p>
+                    <h3 class="font-bold text-lg mb-2 text-red-600">❌ Google AI Connection Failed</h3>
+                    <p class="mb-3">Unable to connect to Google AI API. Please check:</p>
                     
                     <div class="bg-red-50 p-3 rounded-lg mb-3 border border-red-100">
                         <ul class="text-sm text-red-700 space-y-1">
                             <li><i class="fas fa-check-circle mr-2"></i>Your internet connection</li>
-                            <li><i class="fas fa-check-circle mr-2"></i>OpenRouter API status</li>
-                            <li><i class="fas fa-check-circle mr-2"></i>API key validity</li>
+                            <li><i class="fas fa-check-circle mr-2"></i>Google AI API key validity</li>
+                            <li><i class="fas fa-check-circle mr-2"></i>API quota availability</li>
                         </ul>
                     </div>
                     
@@ -605,10 +612,10 @@
         function getCreatorResponse() {
             const responses = [
                 `I was created by ${CREATOR_NAME}. He's the talented developer who built this chat interface!`,
-                `My creator is ${CREATOR_NAME}. He integrated me with the GLM-4.5 AI model through OpenRouter.`,
+                `My creator is ${CREATOR_NAME}. He integrated me with the Gemini 3 Flash AI model from Google AI.`,
                 `${CREATOR_NAME} is my creator. He developed this amazing chat application where we can talk!`,
                 `This chat interface was built by ${CREATOR_NAME}. He's the one who made it possible for us to communicate!`,
-                `I'm powered by GLM-4.5 AI, but this chat application was created by ${CREATOR_NAME}.`
+                `I'm powered by Google's Gemini 3 Flash AI, but this chat application was created by ${CREATOR_NAME}.`
             ];
             
             return responses[Math.floor(Math.random() * responses.length)];
@@ -676,8 +683,8 @@
             const typingId = showTypingIndicator();
             
             try {
-                // Get response from OpenRouter
-                const response = await getAIResponse();
+                // Get response from Google Gemini
+                const response = await getGeminiResponse();
                 
                 // Remove typing indicator
                 removeTypingIndicator(typingId);
@@ -732,44 +739,63 @@
             }
         }
         
-        // Get AI response from OpenRouter
-        async function getAIResponse() {
-            const apiUrl = 'https://openrouter.ai/api/v1/chat/completions';
+        // Get Gemini response from Google AI
+        async function getGeminiResponse() {
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_ID}:generateContent?key=${GOOGLE_API_KEY}`;
+            
+            // Format conversation for Gemini API
+            const contents = conversationHistory.map(msg => ({
+                role: msg.role === 'user' ? 'user' : 'model',
+                parts: [{ text: msg.content }]
+            }));
             
             const payload = {
-                model: MODEL_ID,
-                messages: conversationHistory,
-                max_tokens: 1500,
-                temperature: 0.7,
-                top_p: 0.9,
-                frequency_penalty: 0.1,
-                presence_penalty: 0.1,
-                stream: false
+                contents: contents,
+                generationConfig: {
+                    temperature: 0.7,
+                    topP: 0.9,
+                    topK: 40,
+                    maxOutputTokens: 1500,
+                },
+                safetySettings: [
+                    {
+                        category: "HARM_CATEGORY_HARASSMENT",
+                        threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                    },
+                    {
+                        category: "HARM_CATEGORY_HATE_SPEECH",
+                        threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                    },
+                    {
+                        category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                        threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                    },
+                    {
+                        category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+                        threshold: "BLOCK_MEDIUM_AND_ABOVE"
+                    }
+                ]
             };
             
             const response = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-                    'HTTP-Referer': window.location.origin || 'http://localhost',
-                    'X-Title': 'GLM-4.5 Chat Assistant'
+                    'Content-Type': 'application/json'
                 },
                 body: JSON.stringify(payload)
             });
             
             if (!response.ok) {
-                const errorText = await response.text();
-                console.error('API Error:', errorText);
-                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                const errorData = await response.json().catch(() => ({}));
+                throw new Error(errorData.error?.message || `HTTP ${response.status}: ${response.statusText}`);
             }
             
             const data = await response.json();
             
-            if (data.choices && data.choices[0] && data.choices[0].message) {
-                return data.choices[0].message.content;
+            if (data.candidates && data.candidates[0] && data.candidates[0].content) {
+                return data.candidates[0].content.parts[0].text;
             } else {
-                throw new Error('Invalid response format from API');
+                throw new Error('Invalid response format from Google AI');
             }
         }
         
@@ -802,7 +828,7 @@
                     messageElement.innerHTML = `
                         <div class="flex items-center mb-2">
                             <div class="model-badge">
-                                <i class="fas fa-robot mr-1"></i> GLM-4.5
+                                <i class="fab fa-google mr-1"></i> Gemini 3 Flash
                             </div>
                         </div>
                         <div class="message-content">${formatMessage(content)}</div>
@@ -844,7 +870,7 @@
             typingElement.innerHTML = `
                 <div class="flex items-center mb-2">
                     <div class="model-badge">
-                        <i class="fas fa-robot mr-1"></i> GLM-4.5
+                        <i class="fab fa-google mr-1"></i> Gemini 3 Flash
                     </div>
                 </div>
                 <div class="typing-indicator mt-2">
@@ -880,9 +906,9 @@
                     welcomeDiv.innerHTML = `
                         <div class="flex items-center mb-2">
                             <div class="model-badge pulse">
-                                <i class="fas fa-bolt mr-1"></i> GLM-4.5
+                                <i class="fab fa-google mr-1"></i> Gemini 3 Flash
                             </div>
-                            <span class="text-xs text-gray-500 ml-2">via OpenRouter</span>
+                            <span class="text-xs text-gray-500 ml-2">via Google AI</span>
                         </div>
                         <div class="message-content">
                             <h3 class="font-bold text-lg mb-2">💫 Chat Cleared!</h3>
